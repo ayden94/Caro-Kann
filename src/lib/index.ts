@@ -1,3 +1,3 @@
-import { playTartakower } from "./hooks/Caro-Kann";
+import Lopez from "./Lopez";
 
-export { playTartakower };
+export default Lopez;
