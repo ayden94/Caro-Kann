@@ -1,4 +1,4 @@
-export default function createBoard<T>(initFn: (set: (nextState: Partial<T> | ((prev: T) => T)) => void, get: () => T) => T) {
+export function createBoard<T>(initFn: (set: (nextState: Partial<T> | ((prev: T) => T)) => void, get: () => T) => T) {
   let board: T;
   const callbacks = new Set<() => void>();
   const getBoard = () => board;

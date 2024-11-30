@@ -1,4 +1,4 @@
-export default function createBoard(initFn) {
+export function createBoard(initFn) {
     let board;
     const callbacks = new Set();
     const getBoard = () => board;

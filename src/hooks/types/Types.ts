@@ -6,4 +6,9 @@ export interface Board<T> {
 
 export type setBoard<T> = Pick<Board<T>, "setBoard">["setBoard"];
 
-// export type CreateBoard = <T>(initFn: (set: T | ((prev: T) => T) , get: () => T) => T) => Board<T>;
+export type InitFn<T> = (set: (nextState: Partial<T> | ((prev: T) => T)) => void, get: () => T) => T
+
+export type UseBoard<T> = {
+  (): T;
+  <S>(selector: (state: T) => S): S;
+}
