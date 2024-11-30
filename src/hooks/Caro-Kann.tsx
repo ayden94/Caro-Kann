@@ -1,4 +1,4 @@
-import { createContext, useContext, useSyncExternalStore } from "react";
+import { createContext } from "react";
 import { Board, InitFn, UseBoard } from "./types/Types";
 import { createBoard } from "./funcs/createBoard";
 import { useStore } from "./funcs/useStore";
@@ -10,5 +10,5 @@ export const playTartakower = <T extends object>(initFn: InitFn<T>) => {
     return selector ? useStore(Board, selector) : useStore(Board);
   }
 
-  return { useBoard };
+  return useBoard;
 };
