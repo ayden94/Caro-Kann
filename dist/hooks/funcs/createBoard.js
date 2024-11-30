@@ -1,9 +1,9 @@
-const createBoard = (initState) => {
-    let board = initState;
+export default function createBoard(initFn) {
+    let board;
     const callbacks = new Set();
     const getBoard = () => board;
     const setBoard = (nextState) => {
-        board = typeof nextState === "function" ? nextState(board) : nextState;
+        board = typeof nextState === "function" ? nextState(board) : { ...board, ...nextState };
         callbacks.forEach((callback) => callback());
     };
     const subscribe = (callback) => {
@@ -12,6 +12,7 @@ const createBoard = (initState) => {
             callbacks.delete(callback);
         };
     };
+    board = initFn(setBoard, getBoard);
     return { getBoard, setBoard, subscribe };
-};
-export default createBoard;
+}
+;

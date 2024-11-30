@@ -1,15 +1,10 @@
-import { CreateBoard } from "../Types";
-
-const createBoard: CreateBoard = (initState) => {
-  type InitState = typeof initState;
-
-  let board = initState;
+export default function createBoard<T>(initFn: (set: (nextState: Partial<T> | ((prev: T) => T)) => void, get: () => T) => T) {
+  let board: T;
   const callbacks = new Set<() => void>();
   const getBoard = () => board;
 
-
-  const setBoard = (nextState: InitState | ((prev: InitState) => InitState)) => {
-    board = typeof nextState === "function" ? (nextState as (prev: InitState) => InitState)(board) : nextState;
+  const setBoard = (nextState: Partial<T> | ((prev: T) => T)) => {
+    board = typeof nextState === "function" ? (nextState as (prev: T) => T)(board) : {...board, ...nextState};
     callbacks.forEach((callback) => callback());
   };
 
@@ -21,7 +16,7 @@ const createBoard: CreateBoard = (initState) => {
     };
   };
 
+  board = initFn(setBoard, getBoard);
+
   return { getBoard, setBoard, subscribe };
 };
-
-export default createBoard;

@@ -1,12 +1,9 @@
-import { ReactNode } from "react";
-import { setBoard } from "./Types";
-export declare const playTartakower: <T>(initialState: T) => {
+/// <reference types="react" />
+import { Board } from "./Types";
+export declare const playTartakower: <T extends object>(initFn: (set: (nextState: Partial<T> | ((prev: T) => T)) => void, get: () => T) => T) => {
     useBoard: {
-        (): [T, setBoard<T>];
-        <S>(selector: (state: T) => S): [S, setBoard<T>];
+        (): T;
+        <S>(selector: (state: T) => S): S;
     };
-    BoardContext: ({ value, children }: {
-        value: T;
-        children: ReactNode;
-    }) => import("react/jsx-runtime").JSX.Element;
+    Board: import("react").Context<Board<T>>;
 };

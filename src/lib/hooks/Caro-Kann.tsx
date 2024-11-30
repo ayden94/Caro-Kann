@@ -1,26 +1,22 @@
-import { createContext, ReactNode, useContext, useSyncExternalStore } from "react";
-import { Board, setBoard } from "./Types";
+import { createContext, useContext, useSyncExternalStore } from "react";
+import { Board } from "./Types";
 import createBoard from "./funcs/createBoard";
 
-export const playTartakower = <T,>(initialState: T) => {
-  const Board = createContext<Board<T>>(createBoard(initialState));
+export const playTartakower = <T extends object>(initFn: (set: (nextState: Partial<T> | ((prev: T) => T)) => void, get: () => T) => T) => {
+  const Board = createContext<Board<T>>(createBoard(initFn));
 
-  function useBoard(): [T, setBoard<T>];
-  function useBoard<S>(selector: (state: T) => S): [S, setBoard<T>];
+  function useBoard(): T;
+  function useBoard<S>(selector: (state: T) => S): S;
 
   function useBoard<S>(selector?: (state: T) => S) {
-    const { getBoard, setBoard, subscribe } = useContext(Board);
+    const { getBoard, subscribe } = useContext(Board);
 
     const notationSnapshot = () => (selector ? selector(getBoard()) : getBoard());
 
     const board = useSyncExternalStore(subscribe, notationSnapshot, notationSnapshot);
 
-    return [board, setBoard] as const;
+    return board;
   }
 
-  const BoardContext = ({ value, children }: { value: T; children: ReactNode }) => {
-    return <Board.Provider value={createBoard(value)}>{children}</Board.Provider>;
-  };
-
-  return { useBoard, BoardContext };
+  return { useBoard };
 };

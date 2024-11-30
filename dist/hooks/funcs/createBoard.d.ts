@@ -1,3 +1,5 @@
-import { CreateBoard } from "../Types";
-declare const createBoard: CreateBoard;
-export default createBoard;
+export default function createBoard<T>(initFn: (set: (nextState: Partial<T> | ((prev: T) => T)) => void, get: () => T) => T): {
+    getBoard: () => T;
+    setBoard: (nextState: Partial<T> | ((prev: T) => T)) => void;
+    subscribe: (callback: () => void) => () => void;
+};

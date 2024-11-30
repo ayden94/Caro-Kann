@@ -4,4 +4,3 @@ export interface Board<T> {
     subscribe: (callback: () => void) => () => void;
 }
 export type setBoard<T> = Pick<Board<T>, "setBoard">["setBoard"];
-export type CreateBoard = <T>(initValue: T) => Board<T>;
